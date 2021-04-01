@@ -256,7 +256,7 @@ namespace SisLanchonete
             dgvVenda.Rows.Clear();
             dgvVenda.Refresh();
             txtTotal.Text = "";
-            MessageBox.Show("Venda realizada com sucesso!", "Venda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Pedido realizado com sucesso!", "Venda", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnLocalizarVenda_Click(object sender, EventArgs e)
@@ -311,6 +311,80 @@ namespace SisLanchonete
                 MessageBox.Show("Nenhum pedido localizado com este ID!", "Não localizado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             con.Close();
+        }
+
+        private void btnAtualizarPedido_Click(object sender, EventArgs e)
+        {
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
+            con.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE Venda SET total_venda = @total WHERE Id_venda = @Id", con);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = Convert.ToInt32(txtIdVenda.Text.Trim());
+            cmd.Parameters.AddWithValue("@total", SqlDbType.Decimal).Value = Convert.ToDecimal(txtTotal.Text.Trim());
+            cmd.ExecuteNonQuery();
+
+            SqlCommand deletar_itens = new SqlCommand("DELETE FROM ItensVenda WHERE Id_venda = @Id", con);
+            deletar_itens.CommandType = CommandType.Text;
+            deletar_itens.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = Convert.ToInt32(txtIdVenda.Text.Trim());
+            deletar_itens.ExecuteNonQuery();
+
+            foreach(DataGridViewRow dr in dgvVenda.Rows)
+            {
+                SqlCommand cmditens = new SqlCommand("InserirItens", con);
+                cmditens.CommandType = CommandType.StoredProcedure;
+                cmditens.Parameters.AddWithValue("@Id_Venda", SqlDbType.Int).Value = Convert.ToInt32(txtIdVenda.Text.Trim());
+                cmditens.Parameters.AddWithValue("@Id_Produto", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[0].Value);
+                cmditens.Parameters.AddWithValue("@quantidade", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[2].Value);
+                cmditens.Parameters.AddWithValue("@Valor_Unitário", SqlDbType.Decimal).Value = Convert.ToDecimal(dr.Cells[3].Value);
+                cmditens.Parameters.AddWithValue("@Valor_Total", SqlDbType.Decimal).Value = Convert.ToDecimal(dr.Cells[4].Value);
+                cmditens.ExecuteNonQuery();
+            }
+            MessageBox.Show("Pedido atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            con.Close();
+            dgvVenda.Columns.Clear();
+            dgvVenda.Rows.Clear();
+            txtIdVenda.Text = "";
+        }
+
+        private void btnVendaFinal_Click(object sender, EventArgs e)
+        {
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
+            con.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE Venda SET total_venda = @total, situacao = @situacao WHERE Id_venda = @Id", con);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@total", SqlDbType.Decimal).Value = Convert.ToDecimal(txtTotal.Text.Trim());
+            cmd.Parameters.AddWithValue("@situacao", SqlDbType.NChar).Value = "Finalizado";
+            cmd.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = Convert.ToInt32(txtIdVenda.Text.Trim());
+            cmd.ExecuteNonQuery();
+
+            foreach (DataGridViewRow dr in dgvVenda.Rows)
+            {
+                SqlCommand cmditens = new SqlCommand("InserirItensVendidos", con);
+                cmditens.CommandType = CommandType.StoredProcedure;
+                cmditens.Parameters.AddWithValue("@Id_Venda", SqlDbType.Int).Value = Convert.ToInt32(txtIdVenda.Text.Trim());
+                cmditens.Parameters.AddWithValue("@Id_Produto", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[0].Value);
+                cmditens.Parameters.AddWithValue("@quantidade", SqlDbType.Int).Value = Convert.ToInt32(dr.Cells[2].Value);
+                cmditens.Parameters.AddWithValue("@Valor_Unitário", SqlDbType.Decimal).Value = Convert.ToDecimal(dr.Cells[3].Value);
+                cmditens.Parameters.AddWithValue("@Valor_Total", SqlDbType.Decimal).Value = Convert.ToDecimal(dr.Cells[4].Value);
+                cmditens.ExecuteNonQuery();
+            }
+
+            SqlCommand deletar_itens = new SqlCommand("DELETE FROM ItensVenda WHERE Id_venda = @Id", con);
+            deletar_itens.CommandType = CommandType.Text;
+            deletar_itens.Parameters.AddWithValue("@Id", SqlDbType.Int).Value = Convert.ToInt32(txtIdVenda.Text.Trim());
+            deletar_itens.ExecuteNonQuery();
+
+            MessageBox.Show("Venda realizada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            con.Close();
+            dgvVenda.Columns.Clear();
+            dgvVenda.Rows.Clear();
+            txtIdVenda.Text = "";
         }
     }
 }

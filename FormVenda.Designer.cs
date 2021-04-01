@@ -244,6 +244,7 @@ namespace SisLanchonete
             this.btnVendaFinal.TabIndex = 19;
             this.btnVendaFinal.Text = "Finalizar Venda";
             this.btnVendaFinal.UseVisualStyleBackColor = true;
+            this.btnVendaFinal.Click += new System.EventHandler(this.btnVendaFinal_Click);
             // 
             // lblIdVenda
             // 
@@ -281,6 +282,7 @@ namespace SisLanchonete
             this.btnAtualizarPedido.TabIndex = 23;
             this.btnAtualizarPedido.Text = "Atualizar Pedido";
             this.btnAtualizarPedido.UseVisualStyleBackColor = true;
+            this.btnAtualizarPedido.Click += new System.EventHandler(this.btnAtualizarPedido_Click);
             // 
             // FormVenda
             // 
