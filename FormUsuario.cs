@@ -13,10 +13,12 @@ namespace SisLanchonete
 {
     public partial class FormUsuario : Form
     {
+        private Cripto b;
         SqlConnection con = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Programas\\SisLanchonete\\DbLanchonete.mdf;Integrated Security=True");
         public FormUsuario()
         {
             InitializeComponent();
+            b = new Cripto();
         }
 
         public void CarregaDGV()
@@ -43,6 +45,7 @@ namespace SisLanchonete
         {
             try
             {
+                string senha = b.Base64Encode(txtSenha.Text);
                 con.Open();
                 SqlCommand cmd = new SqlCommand("InserirUsuario", con);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -50,7 +53,7 @@ namespace SisLanchonete
                 cmd.Parameters.AddWithValue("@cargo", SqlDbType.NChar).Value = txtCargo.Text.Trim();
                 cmd.Parameters.AddWithValue("@admissao", SqlDbType.Date).Value = dtpAdmissao.Value;
                 cmd.Parameters.AddWithValue("@login", SqlDbType.NChar).Value = txtLogin.Text.Trim();
-                cmd.Parameters.AddWithValue("@senha", SqlDbType.NChar).Value = txtSenha.Text.Trim();
+                cmd.Parameters.AddWithValue("@senha", SqlDbType.NChar).Value = senha;
                 cmd.ExecuteNonQuery();
                 CarregaDGV();
                 MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -71,6 +74,7 @@ namespace SisLanchonete
         {
             try
             {
+                string senha = b.Base64Encode(txtSenha.Text);
                 con.Open();
                 SqlCommand cmd = new SqlCommand("AtualizarUsuario", con);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -79,7 +83,7 @@ namespace SisLanchonete
                 cmd.Parameters.AddWithValue("@cargo", SqlDbType.NChar).Value = txtCargo.Text.Trim();
                 cmd.Parameters.AddWithValue("@admissao", SqlDbType.Date).Value = dtpAdmissao.Value;
                 cmd.Parameters.AddWithValue("@login", SqlDbType.NChar).Value = txtLogin.Text.Trim();
-                cmd.Parameters.AddWithValue("@senha", SqlDbType.NChar).Value = txtSenha.Text.Trim();
+                cmd.Parameters.AddWithValue("@senha", SqlDbType.NChar).Value = senha;
                 cmd.ExecuteNonQuery();
                 CarregaDGV();
                 MessageBox.Show("Usuário atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -14,6 +14,7 @@ namespace SisLanchonete
 {
     public partial class FormLogin : Form
     {
+        private Cripto b;
         SqlConnection con = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Programas\\SisLanchonete\\DbLanchonete.mdf;Integrated Security=True");
 
         public FormLogin()
@@ -23,14 +24,16 @@ namespace SisLanchonete
             formSplash.Show();
             Thread.Sleep(3000);
             formSplash.Close();
+            b = new Cripto();
         }
 
         private void btnLogar_Click(object sender, EventArgs e)
         {
+            string senha = b.Base64Encode(txtSenha.Text);
             string usu = "SELECT login, senha FROM Usuario WHERE login = @login AND senha = @senha";
             SqlCommand cmd = new SqlCommand(usu, con);
             cmd.Parameters.AddWithValue("@login", SqlDbType.NChar).Value = txtUsuario.Text.Trim();
-            cmd.Parameters.AddWithValue("@senha", SqlDbType.NChar).Value = txtSenha.Text.Trim();
+            cmd.Parameters.AddWithValue("@senha", SqlDbType.NChar).Value = senha;
             con.Open();
             cmd.CommandType = CommandType.Text;
             SqlDataReader usuario = cmd.ExecuteReader();

@@ -13,6 +13,9 @@ namespace SisLanchonete
 {
     public partial class FormPrincipal : Form
     {
+
+        SqlConnection con = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Programas\\SisLanchonete\\DbLanchonete.mdf;Integrated Security=True");
+
         public FormPrincipal()
         {
             InitializeComponent();
@@ -64,6 +67,55 @@ namespace SisLanchonete
         {
             FormVenda formVenda = new FormVenda();
             formVenda.Show();
+        }
+
+        private void pbClientes_Click(object sender, EventArgs e)
+        {
+            FormCliente formCliente = new FormCliente();
+            formCliente.Show();
+        }
+
+        private void pbUsuarios_Click(object sender, EventArgs e)
+        {
+            FormUsuario formUsuario = new FormUsuario();
+            formUsuario.Show();
+        }
+
+        private void pbProduto_Click(object sender, EventArgs e)
+        {
+            FormProduto formProduto = new FormProduto();
+            formProduto.Show();
+        }
+
+        private void pbVendas_Click(object sender, EventArgs e)
+        {
+            FormVenda formVenda = new FormVenda();
+            formVenda.Show();
+        }
+
+        private void FormPrincipal_Load(object sender, EventArgs e)
+        {
+            // TODO: esta linha de código carrega dados na tabela 'dbLanchoneteDataSet.ProdutosVendidos'. Você pode movê-la ou removê-la conforme necessário.
+            this.produtosVendidosTableAdapter.Fill(this.dbLanchoneteDataSet.ProdutosVendidos);
+            con.Open();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM NumeroProdutos", con);
+            cmd.CommandType = CommandType.Text;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.Read())
+            {
+                lblResultNumeroProdutos.Text = rd["quantidade"].ToString();
+                rd.Close();
+            }
+
+            SqlCommand cmd2 = new SqlCommand("SELECT * FROM MediaPrecos", con);
+            cmd2.CommandType = CommandType.Text;
+            SqlDataReader rd2 = cmd2.ExecuteReader();
+            if (rd2.Read())
+            {
+                lblResultMediaPrecos.Text = "R$ " + rd2["media"].ToString();
+                rd2.Close();
+            }
+            con.Close();
         }
     }
 }
