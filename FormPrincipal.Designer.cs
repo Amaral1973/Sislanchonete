@@ -43,6 +43,7 @@ namespace SisLanchonete
             this.vendaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bancoDeDadosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultarCEPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sobreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbClientes = new System.Windows.Forms.PictureBox();
@@ -50,22 +51,24 @@ namespace SisLanchonete
             this.pbProduto = new System.Windows.Forms.PictureBox();
             this.pbVendas = new System.Windows.Forms.PictureBox();
             this.gbProdutos = new System.Windows.Forms.GroupBox();
-            this.lblNumProdutos = new System.Windows.Forms.Label();
-            this.lblProdutoMaisVendido = new System.Windows.Forms.Label();
-            this.lblProdutoMenosVendido = new System.Windows.Forms.Label();
-            this.lblMediaPrecos = new System.Windows.Forms.Label();
-            this.lblResultNumeroProdutos = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.lblResultMediaPrecos = new System.Windows.Forms.Label();
+            this.lblMostrarProdutoMenosVendido = new System.Windows.Forms.Label();
+            this.lblMostraProdutoMaisVendido = new System.Windows.Forms.Label();
+            this.lblResultNumeroProdutos = new System.Windows.Forms.Label();
+            this.lblMediaPrecos = new System.Windows.Forms.Label();
+            this.lblProdutoMenosVendido = new System.Windows.Forms.Label();
+            this.lblProdutoMaisVendido = new System.Windows.Forms.Label();
+            this.lblNumProdutos = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.dbLanchoneteDataSet = new SisLanchonete.DbLanchoneteDataSet();
             this.produtosVendidosBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dbLanchoneteDataSet = new SisLanchonete.DbLanchoneteDataSet();
             this.produtosVendidosTableAdapter = new SisLanchonete.DbLanchoneteDataSetTableAdapters.ProdutosVendidosTableAdapter();
+            this.relatóriosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbClientes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbUsuarios)).BeginInit();
@@ -73,8 +76,8 @@ namespace SisLanchonete
             ((System.ComponentModel.ISupportInitialize)(this.pbVendas)).BeginInit();
             this.gbProdutos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dbLanchoneteDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.produtosVendidosBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dbLanchoneteDataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -83,6 +86,7 @@ namespace SisLanchonete
             this.cadastrosToolStripMenuItem,
             this.vendasToolStripMenuItem,
             this.testesToolStripMenuItem,
+            this.relatóriosToolStripMenuItem,
             this.sobreToolStripMenuItem,
             this.sairToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -140,7 +144,8 @@ namespace SisLanchonete
             // testesToolStripMenuItem
             // 
             this.testesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.bancoDeDadosToolStripMenuItem});
+            this.bancoDeDadosToolStripMenuItem,
+            this.consultarCEPToolStripMenuItem});
             this.testesToolStripMenuItem.Name = "testesToolStripMenuItem";
             this.testesToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.testesToolStripMenuItem.Text = "Testes";
@@ -151,6 +156,13 @@ namespace SisLanchonete
             this.bancoDeDadosToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.bancoDeDadosToolStripMenuItem.Text = "Banco de Dados";
             this.bancoDeDadosToolStripMenuItem.Click += new System.EventHandler(this.bancoDeDadosToolStripMenuItem_Click);
+            // 
+            // consultarCEPToolStripMenuItem
+            // 
+            this.consultarCEPToolStripMenuItem.Name = "consultarCEPToolStripMenuItem";
+            this.consultarCEPToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.consultarCEPToolStripMenuItem.Text = "Consultar CEP";
+            this.consultarCEPToolStripMenuItem.Click += new System.EventHandler(this.consultarCEPToolStripMenuItem_Click);
             // 
             // sobreToolStripMenuItem
             // 
@@ -212,8 +224,8 @@ namespace SisLanchonete
             // gbProdutos
             // 
             this.gbProdutos.Controls.Add(this.lblResultMediaPrecos);
-            this.gbProdutos.Controls.Add(this.label7);
-            this.gbProdutos.Controls.Add(this.label6);
+            this.gbProdutos.Controls.Add(this.lblMostrarProdutoMenosVendido);
+            this.gbProdutos.Controls.Add(this.lblMostraProdutoMaisVendido);
             this.gbProdutos.Controls.Add(this.lblResultNumeroProdutos);
             this.gbProdutos.Controls.Add(this.lblMediaPrecos);
             this.gbProdutos.Controls.Add(this.lblProdutoMenosVendido);
@@ -227,35 +239,37 @@ namespace SisLanchonete
             this.gbProdutos.TabStop = false;
             this.gbProdutos.Text = "Produtos";
             // 
-            // lblNumProdutos
+            // lblResultMediaPrecos
             // 
-            this.lblNumProdutos.AutoSize = true;
-            this.lblNumProdutos.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumProdutos.Location = new System.Drawing.Point(6, 47);
-            this.lblNumProdutos.Name = "lblNumProdutos";
-            this.lblNumProdutos.Size = new System.Drawing.Size(167, 20);
-            this.lblNumProdutos.TabIndex = 0;
-            this.lblNumProdutos.Text = "Números de Produtos:";
+            this.lblResultMediaPrecos.AutoSize = true;
+            this.lblResultMediaPrecos.Location = new System.Drawing.Point(210, 163);
+            this.lblResultMediaPrecos.Name = "lblResultMediaPrecos";
+            this.lblResultMediaPrecos.Size = new System.Drawing.Size(0, 20);
+            this.lblResultMediaPrecos.TabIndex = 7;
             // 
-            // lblProdutoMaisVendido
+            // lblMostrarProdutoMenosVendido
             // 
-            this.lblProdutoMaisVendido.AutoSize = true;
-            this.lblProdutoMaisVendido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProdutoMaisVendido.Location = new System.Drawing.Point(6, 85);
-            this.lblProdutoMaisVendido.Name = "lblProdutoMaisVendido";
-            this.lblProdutoMaisVendido.Size = new System.Drawing.Size(177, 20);
-            this.lblProdutoMaisVendido.TabIndex = 1;
-            this.lblProdutoMaisVendido.Text = "Produtos Mais Vendido:";
+            this.lblMostrarProdutoMenosVendido.AutoSize = true;
+            this.lblMostrarProdutoMenosVendido.Location = new System.Drawing.Point(210, 127);
+            this.lblMostrarProdutoMenosVendido.Name = "lblMostrarProdutoMenosVendido";
+            this.lblMostrarProdutoMenosVendido.Size = new System.Drawing.Size(0, 20);
+            this.lblMostrarProdutoMenosVendido.TabIndex = 6;
             // 
-            // lblProdutoMenosVendido
+            // lblMostraProdutoMaisVendido
             // 
-            this.lblProdutoMenosVendido.AutoSize = true;
-            this.lblProdutoMenosVendido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProdutoMenosVendido.Location = new System.Drawing.Point(6, 127);
-            this.lblProdutoMenosVendido.Name = "lblProdutoMenosVendido";
-            this.lblProdutoMenosVendido.Size = new System.Drawing.Size(184, 20);
-            this.lblProdutoMenosVendido.TabIndex = 2;
-            this.lblProdutoMenosVendido.Text = "Produto Menos Vendido:";
+            this.lblMostraProdutoMaisVendido.AutoSize = true;
+            this.lblMostraProdutoMaisVendido.Location = new System.Drawing.Point(210, 85);
+            this.lblMostraProdutoMaisVendido.Name = "lblMostraProdutoMaisVendido";
+            this.lblMostraProdutoMaisVendido.Size = new System.Drawing.Size(0, 20);
+            this.lblMostraProdutoMaisVendido.TabIndex = 5;
+            // 
+            // lblResultNumeroProdutos
+            // 
+            this.lblResultNumeroProdutos.AutoSize = true;
+            this.lblResultNumeroProdutos.Location = new System.Drawing.Point(210, 47);
+            this.lblResultNumeroProdutos.Name = "lblResultNumeroProdutos";
+            this.lblResultNumeroProdutos.Size = new System.Drawing.Size(0, 20);
+            this.lblResultNumeroProdutos.TabIndex = 4;
             // 
             // lblMediaPrecos
             // 
@@ -267,39 +281,35 @@ namespace SisLanchonete
             this.lblMediaPrecos.TabIndex = 3;
             this.lblMediaPrecos.Text = "Média de Preço:";
             // 
-            // lblResultNumeroProdutos
+            // lblProdutoMenosVendido
             // 
-            this.lblResultNumeroProdutos.AutoSize = true;
-            this.lblResultNumeroProdutos.Location = new System.Drawing.Point(210, 47);
-            this.lblResultNumeroProdutos.Name = "lblResultNumeroProdutos";
-            this.lblResultNumeroProdutos.Size = new System.Drawing.Size(0, 20);
-            this.lblResultNumeroProdutos.TabIndex = 4;
+            this.lblProdutoMenosVendido.AutoSize = true;
+            this.lblProdutoMenosVendido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProdutoMenosVendido.Location = new System.Drawing.Point(6, 127);
+            this.lblProdutoMenosVendido.Name = "lblProdutoMenosVendido";
+            this.lblProdutoMenosVendido.Size = new System.Drawing.Size(184, 20);
+            this.lblProdutoMenosVendido.TabIndex = 2;
+            this.lblProdutoMenosVendido.Text = "Produto Menos Vendido:";
             // 
-            // label6
+            // lblProdutoMaisVendido
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(210, 85);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 20);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "label6";
+            this.lblProdutoMaisVendido.AutoSize = true;
+            this.lblProdutoMaisVendido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProdutoMaisVendido.Location = new System.Drawing.Point(6, 85);
+            this.lblProdutoMaisVendido.Name = "lblProdutoMaisVendido";
+            this.lblProdutoMaisVendido.Size = new System.Drawing.Size(177, 20);
+            this.lblProdutoMaisVendido.TabIndex = 1;
+            this.lblProdutoMaisVendido.Text = "Produtos Mais Vendido:";
             // 
-            // label7
+            // lblNumProdutos
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(210, 127);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(57, 20);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "label7";
-            // 
-            // lblResultMediaPrecos
-            // 
-            this.lblResultMediaPrecos.AutoSize = true;
-            this.lblResultMediaPrecos.Location = new System.Drawing.Point(210, 163);
-            this.lblResultMediaPrecos.Name = "lblResultMediaPrecos";
-            this.lblResultMediaPrecos.Size = new System.Drawing.Size(0, 20);
-            this.lblResultMediaPrecos.TabIndex = 7;
+            this.lblNumProdutos.AutoSize = true;
+            this.lblNumProdutos.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumProdutos.Location = new System.Drawing.Point(6, 47);
+            this.lblNumProdutos.Name = "lblNumProdutos";
+            this.lblNumProdutos.Size = new System.Drawing.Size(167, 20);
+            this.lblNumProdutos.TabIndex = 0;
+            this.lblNumProdutos.Text = "Números de Produtos:";
             // 
             // label1
             // 
@@ -362,19 +372,33 @@ namespace SisLanchonete
             title1.Text = "Produtos Vendidos";
             this.chart1.Titles.Add(title1);
             // 
-            // dbLanchoneteDataSet
-            // 
-            this.dbLanchoneteDataSet.DataSetName = "DbLanchoneteDataSet";
-            this.dbLanchoneteDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // produtosVendidosBindingSource
             // 
             this.produtosVendidosBindingSource.DataMember = "ProdutosVendidos";
             this.produtosVendidosBindingSource.DataSource = this.dbLanchoneteDataSet;
             // 
+            // dbLanchoneteDataSet
+            // 
+            this.dbLanchoneteDataSet.DataSetName = "DbLanchoneteDataSet";
+            this.dbLanchoneteDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // produtosVendidosTableAdapter
             // 
             this.produtosVendidosTableAdapter.ClearBeforeFill = true;
+            // 
+            // relatóriosToolStripMenuItem
+            // 
+            this.relatóriosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clientesToolStripMenuItem});
+            this.relatóriosToolStripMenuItem.Name = "relatóriosToolStripMenuItem";
+            this.relatóriosToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+            this.relatóriosToolStripMenuItem.Text = "Relatórios";
+            // 
+            // clientesToolStripMenuItem
+            // 
+            this.clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
+            this.clientesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clientesToolStripMenuItem.Text = "Clientes";
             // 
             // FormPrincipal
             // 
@@ -407,8 +431,8 @@ namespace SisLanchonete
             this.gbProdutos.ResumeLayout(false);
             this.gbProdutos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dbLanchoneteDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.produtosVendidosBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dbLanchoneteDataSet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -433,8 +457,8 @@ namespace SisLanchonete
         private System.Windows.Forms.PictureBox pbVendas;
         private System.Windows.Forms.GroupBox gbProdutos;
         private System.Windows.Forms.Label lblResultMediaPrecos;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblMostrarProdutoMenosVendido;
+        private System.Windows.Forms.Label lblMostraProdutoMaisVendido;
         private System.Windows.Forms.Label lblResultNumeroProdutos;
         private System.Windows.Forms.Label lblMediaPrecos;
         private System.Windows.Forms.Label lblProdutoMenosVendido;
@@ -448,5 +472,8 @@ namespace SisLanchonete
         private DbLanchoneteDataSet dbLanchoneteDataSet;
         private System.Windows.Forms.BindingSource produtosVendidosBindingSource;
         private DbLanchoneteDataSetTableAdapters.ProdutosVendidosTableAdapter produtosVendidosTableAdapter;
+        private System.Windows.Forms.ToolStripMenuItem consultarCEPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem relatóriosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clientesToolStripMenuItem;
     }
 }

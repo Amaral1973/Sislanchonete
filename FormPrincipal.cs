@@ -115,7 +115,31 @@ namespace SisLanchonete
                 lblResultMediaPrecos.Text = "R$ " + rd2["media"].ToString();
                 rd2.Close();
             }
+
+            SqlCommand cmd3 = new SqlCommand("select top 1 ItensVendidos.Id_produto, SUM(ItensVendidos.quantidade) as total, [Produto	].nome from ItensVendidos inner join [Produto	] on ItensVendidos.Id_produto = [Produto	].Id group by ItensVendidos.Id_produto, [Produto	].nome order by total desc", con);
+            cmd3.CommandType = CommandType.Text;
+            SqlDataReader rd3 = cmd3.ExecuteReader();
+            if (rd3.Read())
+            {
+                lblMostraProdutoMaisVendido.Text = rd3["nome"].ToString();
+                rd3.Close();
+            }
+
+            SqlCommand cmd4 = new SqlCommand("select top 1 ItensVendidos.Id_produto, SUM(ItensVendidos.quantidade) as total, [Produto	].nome from ItensVendidos inner join [Produto	] on ItensVendidos.Id_produto = [Produto	].Id group by ItensVendidos.Id_produto, [Produto	].nome order by total asc", con);
+            cmd4.CommandType = CommandType.Text;
+            SqlDataReader rd4 = cmd4.ExecuteReader();
+            if (rd4.Read())
+            {
+                lblMostrarProdutoMenosVendido.Text = rd4["nome"].ToString();
+                rd4.Close();
+            }
             con.Close();
+        }
+
+        private void consultarCEPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormConsultaCEP formConsultaCEP = new FormConsultaCEP();
+            formConsultaCEP.Show();
         }
     }
 }
